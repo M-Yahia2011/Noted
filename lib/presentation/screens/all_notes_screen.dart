@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:noted/bussiness_logic/cubit/notes_cubit.dart';
-
-import 'package:noted/helpers/app_theme.dart';
-
-import '../widgets/note_card.dart';
+import 'package:noted/presentation/screens/add_note_screen.dart';
+import '../../core/utils/app_theme.dart';
+import '../manager/cubit/notes_cubit.dart';
+import '../widgets/notes_gridview.dart';
 
 class AllNotesScreen extends StatefulWidget {
   const AllNotesScreen({super.key});
@@ -18,14 +17,14 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<NotesCubit>(context).getAllNotes();
+    // BlocProvider.of<NotesCubit>(context).fetchAllNotes();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: AppSTheme.mainColor,
+        backgroundColor: AppTheme.mainColor,
         drawer: const Drawer(),
         appBar: AppBar(
           title: const Text("Noted"),
@@ -37,46 +36,29 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
           ],
         ),
         body: BlocBuilder<NotesCubit, NotesState>(
-          // buildWhen: (previous, current) {
-          //   if (current is NotesFetched && previous is! NotesFetched) {
-          //     return true;
-          //   } else {
-          //     return false;
-          //   }
-          // },
           builder: (context, state) {
-            if (state is NotesFetched && state.notes.isNotEmpty) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 8,
-                            mainAxisSpacing: 8),
-                    itemCount: state.notes.length,
-                    itemBuilder: (context, idx) {
-                      return NoteCard(note: state.notes[idx]);
-                    }),
-              );
-            } else if (state is NotesFetched && state.notes.isEmpty) {
+            if (state is NotesLoading) {
               return const Center(
-                child: Text("No Notes!"),
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is NotesLoaded) {
+              return NotesGridView(notes: state.notes);
+            } else if (state is NotesFailure) {
+              return Center(
+                child: Text(state.errorMessage),
               );
             } else {
-              return const Center(
-                  child: CircularProgressIndicator(
-                color: Colors.white,
-              ));
+              return Container();
             }
           },
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed(AddNoteScreen.routeName);
+          },
           label: Text(
             "Add Note",
-            style:
-                AppSTheme.noteBodyStyle.copyWith(fontWeight: FontWeight.bold),
+            style: AppTheme.noteBodyStyle.copyWith(fontWeight: FontWeight.bold),
           ),
           icon: const Icon(Icons.add),
         ),

@@ -1,34 +1,44 @@
-
 import 'dart:convert';
 
-class Note {
-    final String id;
-    final String title;
-    final String body;
-    final DateTime createdAt;
+import 'package:noted/domain/entities/note_entity.dart';
 
-    Note({
-        required this.id,
-        required this.title,
-        required this.body,
-        required this.createdAt,
-    });
+class NoteModel extends NoteEntity {
+  final String noteId;
+  final String noteTitle;
+  final String noteBody;
+  final DateTime noteCreatedAt;
+  final int noteColor;
 
-    factory Note.fromRawJson(String str) => Note.fromJson(json.decode(str));
+  NoteModel(
+      {required this.noteId,
+      required this.noteTitle,
+      required this.noteBody,
+      required this.noteCreatedAt,
+      required this.noteColor})
+      : super(
+            title: noteTitle,
+            body: noteBody,
+            createdAt: noteCreatedAt,
+            color: noteColor);
 
-    String toRawJson() => json.encode(toJson());
+  factory NoteModel.fromRawJson(String str) =>
+      NoteModel.fromJson(json.decode(str));
 
-    factory Note.fromJson(Map<String, dynamic> json) => Note(
-        id: json["id"].toString(),
-        title: json["title"],
-        body: json["body"],
-        createdAt: DateTime.parse(json["createdAt"]),
-    );
+  String toRawJson() => json.encode(toJson());
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "title": title,
-        "body": body,
-        "createdAt": createdAt.toIso8601String(),
-    };
+  factory NoteModel.fromJson(Map<String, dynamic> json) => NoteModel(
+        noteId: json["id"].toString(),
+        noteTitle: json["title"],
+        noteBody: json["body"],
+        noteColor: json["color"]?? 1,
+        noteCreatedAt: DateTime.parse(json["createdAt"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": noteId,
+        "title": noteTitle,
+        "body": noteBody,
+        "color": noteColor,
+        "createdAt": noteCreatedAt.toIso8601String(),
+      };
 }

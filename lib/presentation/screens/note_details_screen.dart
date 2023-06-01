@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:noted/domain/entities/note_entity.dart';
 
-import '../../data/models/note_model.dart';
 
 class NoteDetailsScreen extends StatefulWidget {
   const NoteDetailsScreen({super.key, required this.note});
   static const routeName = "\note_details";
-  final Note note;
+  final NoteEntity note;
   @override
   State<NoteDetailsScreen> createState() => _NoteDetailsScreenState();
 }

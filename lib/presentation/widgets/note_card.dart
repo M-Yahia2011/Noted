@@ -1,15 +1,13 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:noted/domain/entities/note_entity.dart';
 import 'package:noted/presentation/screens/note_details_screen.dart';
-
-import '../../../data/models/note_model.dart';
-import '../../../helpers/app_theme.dart';
 import 'package:intl/intl.dart' as intl;
+import '../../core/utils/app_theme.dart';
 
 class NoteCard extends StatelessWidget {
   const NoteCard({super.key, required this.note});
-  final Note note;
+  final NoteEntity note;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -21,7 +19,7 @@ class NoteCard extends StatelessWidget {
       },
       child: Ink(
         decoration: BoxDecoration(
-            color: AppSTheme.cardsColors[Random().nextInt(7)],
+            color: AppTheme.cardsColors[Random().nextInt(7)],
             borderRadius: BorderRadius.circular(8)),
         padding: const EdgeInsets.all(8),
         child: Column(
@@ -30,7 +28,7 @@ class NoteCard extends StatelessWidget {
             FittedBox(
               child: Text(
                 note.title,
-                style: AppSTheme.noteTitleStyle,
+                style: AppTheme.noteTitleStyle,
               ),
             ),
             Expanded(
@@ -38,7 +36,7 @@ class NoteCard extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 5),
                 child: Text(
                   note.body,
-                  style: AppSTheme.noteBodyStyle,
+                  style: AppTheme.noteBodyStyle,
                 ),
               ),
             ),
@@ -48,7 +46,7 @@ class NoteCard extends StatelessWidget {
                 FittedBox(
                   child: Text(
                     intl.DateFormat.yMMMd().format(note.createdAt),
-                    style: AppSTheme.noteBodyStyle
+                    style: AppTheme.noteBodyStyle
                         .copyWith(
                           overflow: TextOverflow.fade,
                         )
