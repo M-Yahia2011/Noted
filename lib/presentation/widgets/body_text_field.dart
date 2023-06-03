@@ -4,17 +4,17 @@ import 'package:noted/core/utils/app_theme.dart';
 class BodyTextField extends StatelessWidget {
   const BodyTextField({
     super.key,
-    required this.noteTextController,
+    required this.bodyTextController,
     required this.bodyFocusNode,
   });
 
-  final TextEditingController noteTextController;
+  final TextEditingController bodyTextController;
   final FocusNode bodyFocusNode;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: noteTextController,
+      controller: bodyTextController,
       focusNode: bodyFocusNode,
       // textAlign: TextAlign.center,
       textInputAction: TextInputAction.done,

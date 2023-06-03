@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:noted/presentation/screens/add_note_screen.dart';
 import '../../core/utils/app_theme.dart';
-import '../manager/cubit/notes_cubit.dart';
+import '../manager/cubits/fetch_notes_cubit/fetch_notes_cubit.dart';
 import '../widgets/notes_gridview.dart';
 
 class AllNotesScreen extends StatefulWidget {
@@ -14,11 +14,6 @@ class AllNotesScreen extends StatefulWidget {
 }
 
 class _AllNotesScreenState extends State<AllNotesScreen> {
-  @override
-  void initState() {
-    super.initState();
-    // BlocProvider.of<NotesCubit>(context).fetchAllNotes();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +30,7 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
             IconButton(onPressed: () {}, icon: const Icon(Icons.search))
           ],
         ),
-        body: BlocBuilder<NotesCubit, NotesState>(
+        body: BlocBuilder<FetchNotesCubit, FetchNotesState>(
           builder: (context, state) {
             if (state is NotesLoading) {
               return const Center(
@@ -58,7 +53,8 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
           },
           label: Text(
             "Add Note",
-            style: AppTheme.noteBodyStyle.copyWith(fontWeight: FontWeight.bold),
+            style:
+                AppTheme.noteBodyStyle.copyWith(fontWeight: FontWeight.bold),
           ),
           icon: const Icon(Icons.add),
         ),

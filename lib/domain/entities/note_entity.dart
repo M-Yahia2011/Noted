@@ -16,4 +16,12 @@ class NoteEntity extends HiveObject{
     required this.createdAt,
     required this.color
   });
+
+ Map<String, dynamic> toJson() => {
+        
+        "title": title,
+        "body": body,
+        "color": color,
+        "createdAt": createdAt.toIso8601String(),
+      };
 }

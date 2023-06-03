@@ -13,7 +13,8 @@ class ApiService {
 
   Future<Map<String, dynamic>> post(
       {required String endPoint, required Map<String, dynamic> noteMap}) async {
-    Response response = await dio.post("${Constants.baseUrl}$endPoint");
+    Response response =
+        await dio.post("${Constants.baseUrl}$endPoint", data: {"data":noteMap});
     return response.data;
   }
 }

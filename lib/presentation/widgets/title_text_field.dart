@@ -17,6 +17,7 @@ class TitleTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: titleTextController,
+      
       autofocus: false,
       focusNode: titleFocusNode,
       textInputAction: TextInputAction.next,

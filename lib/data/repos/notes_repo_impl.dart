@@ -31,11 +31,19 @@ class NotesRepository extends NotesRepoAbstract {
       return left(ServerFailure(e.toString()));
     }
   }
-  
+
   @override
-  Future<Either<Failure, NoteEntity>> addNote() {
-    // TODO: implement addNote
-    throw UnimplementedError();
+  Future<Either<Failure, NoteEntity>> addNote(NoteEntity note) async {
+    try {
+      var newNote = await notesRemoteDatasource.addNote(note);
+      notesLocalDataSource.addNote(newNote);
+      return right(newNote);
+    } catch (e) {
+      if (e is DioError) {
+        return left(ServerFailure.fromDioError(e));
+      }
+      return left(ServerFailure(e.toString()));
+    }
   }
 
   // add note

@@ -27,13 +27,14 @@ class NoteModel extends NoteEntity {
   String toRawJson() => json.encode(toJson());
 
   factory NoteModel.fromJson(Map<String, dynamic> json) => NoteModel(
-        noteId: json["id"].toString(),
-        noteTitle: json["title"],
-        noteBody: json["body"],
-        noteColor: json["color"]?? 1,
-        noteCreatedAt: DateTime.parse(json["createdAt"]),
+        noteId: json["data"]["id"].toString(),
+        noteTitle: json["data"]["attributes"]["title"],
+        noteBody: json["data"]["attributes"]["body"],
+        noteColor: json["data"]["attributes"]["color"]?? 1,
+        noteCreatedAt: DateTime.parse(json["data"]["attributes"]["createdAt"]),
       );
 
+  @override
   Map<String, dynamic> toJson() => {
         "id": noteId,
         "title": noteTitle,
