@@ -33,9 +33,10 @@ class NotesRepository extends NotesRepoAbstract {
   }
 
   @override
-  Future<Either<Failure, NoteEntity>> addNote(NoteEntity note) async {
+
+  Future<Either<Failure, NoteEntity>> addNote(Map<String, dynamic> noteMap) async {
     try {
-      var newNote = await notesRemoteDatasource.addNote(note);
+      var newNote = await notesRemoteDatasource.addNote(noteMap);
       notesLocalDataSource.addNote(newNote);
       return right(newNote);
     } catch (e) {

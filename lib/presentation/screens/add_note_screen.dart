@@ -5,7 +5,6 @@ import '/core/utils/app_theme.dart';
 import '/main.dart';
 import '/presentation/manager/cubits/fetch_notes_cubit/fetch_notes_cubit.dart';
 import '/data/repos/notes_repo_impl.dart';
-import '/domain/entities/note_entity.dart';
 import '/domain/use_cases/add_note_use_case.dart';
 import '../manager/cubits/add_note_cubit/add_note_cubit.dart';
 import '../widgets/body_text_field.dart';
@@ -63,21 +62,23 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                       // padding: EdgeInsets.zero,
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
-                        NoteEntity newNote = NoteEntity(
-                            title: titleTextController.text,
-                            body: bodyTextController.text,
-                            createdAt: DateTime.now(),
-                            color: AppTheme
-                                .cardsColors[Random().nextInt(7)].value);
+                        // TODO: implement color picker
+                         Map<String,dynamic> noteMap ={
+                            "title": titleTextController.text,
+                            "body": bodyTextController.text,
+                            "createdAt": DateTime.now(),
+                            "color": AppTheme
+                                .cardsColors[Random().nextInt(7)].value};
+
                         await BlocProvider.of<AddNoteCubit>(context)
-                            .addNote(newNote)
+                            .addNote(noteMap)
                             .then((_) async {
                           await BlocProvider.of<FetchNotesCubit>(context)
                               .fetchAllNotes();
                           // ignore: use_build_context_synchronously
                           if (state is AddNoteFailed) {
                             if (context.mounted) {
-                              print(state.errorMessage);
+                              
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text(state.errorMessage)));
                             }

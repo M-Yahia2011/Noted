@@ -17,11 +17,10 @@ class NotesRemoteDatasource extends DatasourceAbstract {
     return notes;
   }
 
-  Future<NoteEntity> addNote(NoteEntity note) async {
-    
-    var jsonData = await apiService.post(endPoint: 'notes', noteMap: note.toJson());
+  Future<NoteEntity> addNote(Map<String, dynamic> noteMap) async {
+    var jsonData =
+        await apiService.post(endPoint: 'notes', noteMap: noteMap);
     var newNote = NoteModel.fromJson(jsonData);
     return newNote;
   }
-
 }

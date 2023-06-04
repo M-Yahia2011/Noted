@@ -16,6 +16,7 @@ class NoteModel extends NoteEntity {
       required this.noteCreatedAt,
       required this.noteColor})
       : super(
+            id: noteId,
             title: noteTitle,
             body: noteBody,
             createdAt: noteCreatedAt,
@@ -30,7 +31,7 @@ class NoteModel extends NoteEntity {
         noteId: json["data"]["id"].toString(),
         noteTitle: json["data"]["attributes"]["title"],
         noteBody: json["data"]["attributes"]["body"],
-        noteColor: json["data"]["attributes"]["color"]?? 1,
+        noteColor: json["data"]["attributes"]["color"] ?? 1,
         noteCreatedAt: DateTime.parse(json["data"]["attributes"]["createdAt"]),
       );
 

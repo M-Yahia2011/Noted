@@ -6,8 +6,10 @@ import 'package:intl/intl.dart' as intl;
 import '../../core/utils/app_theme.dart';
 
 class NoteCard extends StatelessWidget {
-  const NoteCard({super.key, required this.note});
+  
   final NoteEntity note;
+
+  const NoteCard(this.note, {super.key});
   @override
   Widget build(BuildContext context) {
     return InkWell(
