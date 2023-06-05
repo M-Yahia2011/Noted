@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:noted/domain/entities/note_entity.dart';
 
-
 class NoteDetailsScreen extends StatefulWidget {
   const NoteDetailsScreen({super.key, required this.note});
   static const routeName = "\note_details";
@@ -22,6 +21,7 @@ class _NoteDetailsScreenState extends State<NoteDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(widget.note.color!),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,

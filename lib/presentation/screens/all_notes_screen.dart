@@ -14,12 +14,10 @@ class AllNotesScreen extends StatefulWidget {
 }
 
 class _AllNotesScreenState extends State<AllNotesScreen> {
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: AppTheme.mainColor,
         drawer: const Drawer(),
         appBar: AppBar(
           title: const Text("Noted"),
@@ -33,11 +31,21 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
         body: BlocBuilder<FetchNotesCubit, FetchNotesState>(
           builder: (context, state) {
             if (state is NotesLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: CircularProgressIndicator(
+                  color: AppTheme.bgColor,
+                ),
               );
             } else if (state is NotesLoaded) {
-              return NotesGridView(notes: state.notes);
+              if (state.notes.isEmpty) {
+                return const Center(
+                  child: Text("NO NOTES WERE FOUND!"),
+                );
+              }
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: NotesGridView(notes: state.notes),
+              );
             } else if (state is NotesFailure) {
               return Center(
                 child: Text(state.errorMessage),
@@ -48,15 +56,19 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
           },
         ),
         floatingActionButton: FloatingActionButton.extended(
+          elevation: 2,
           onPressed: () {
             Navigator.of(context).pushNamed(AddNoteScreen.routeName);
           },
           label: Text(
             "Add Note",
-            style:
-                AppTheme.noteBodyStyle.copyWith(fontWeight: FontWeight.bold),
+            style: AppTheme.noteBodyStyle
+                .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          icon: const Icon(Icons.add),
+          icon: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
         ),
       ),
     );

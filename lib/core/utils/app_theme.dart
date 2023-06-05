@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
+  static ThemeData mainTheme = ThemeData(
+      appBarTheme: const AppBarTheme(
+          elevation: 0,
+          color: Colors.transparent,
+          foregroundColor: Colors.black));
   static Color bgColor = const Color(0xffe2e2fe);
   static Color mainColor = const Color(0xff000633);
   static Color accentColor = const Color(0xff0065ff);
@@ -13,6 +18,8 @@ class AppTheme {
     Colors.orange.shade100,
     Colors.pink.shade100,
     Colors.green.shade100,
+    Colors.amber.shade100,
+    Colors.brown.shade100,
   ];
   static TextStyle noteTitleStyle = GoogleFonts.roboto(
       fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black);

@@ -1,6 +1,6 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '/core/utils/app_theme.dart';
 import '/main.dart';
 import '/presentation/manager/cubits/fetch_notes_cubit/fetch_notes_cubit.dart';
@@ -25,6 +25,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   final bodyTextController = TextEditingController();
   late FocusNode titleFocusNode;
   late FocusNode bodyFocusNode;
+  Color? selectedColor = Colors.blue.shade100;
   GlobalKey formKey = GlobalKey<FormState>();
 
   @override
@@ -54,21 +55,23 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
       child: BlocBuilder<AddNoteCubit, AddNoteState>(
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: selectedColor,
             appBar: AppBar(
                 title: const Text("New Note"),
                 centerTitle: true,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
                 actions: [
                   IconButton(
-                      // padding: EdgeInsets.zero,
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
-                        // TODO: implement color picker
-                         Map<String,dynamic> noteMap ={
-                            "title": titleTextController.text,
-                            "body": bodyTextController.text,
-                            "createdAt": DateTime.now(),
-                            "color": AppTheme
-                                .cardsColors[Random().nextInt(7)].value};
+
+                        Map<String, dynamic> noteMap = {
+                          "title": titleTextController.text,
+                          "body": bodyTextController.text,
+                          "createdAt": DateTime.now().toIso8601String(),
+                          "color": selectedColor!.value
+                        };
 
                         await BlocProvider.of<AddNoteCubit>(context)
                             .addNote(noteMap)
@@ -77,36 +80,27 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                               .fetchAllNotes();
                           // ignore: use_build_context_synchronously
                           if (state is AddNoteFailed) {
-                            if (context.mounted) {
-                              
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(state.errorMessage)));
+                            if (mounted) {
+                              showDialog(
+                                  context: context,
+                                  builder: ((context) {
+                                    return AlertDialog(
+                                      content: Text(state.errorMessage),
+                                    );
+                                  }));
                             }
                           }
                           // Navigator.of(context).pop();
                         });
-
-                        // BlocListener<AddNoteCubit, AddNoteState>(
-                        //   listener: (context, state) {
-                        //     if (state is AddNoteLoading) {
-                        //       showDialog(
-                        //         barrierDismissible: false,
-                        //         builder: (ctx) {
-                        //           return const Center(
-                        //             child: CircularProgressIndicator(
-                        //               strokeWidth: 2,
-                        //             ),
-                        //           );
-                        //         },
-                        //         context: context,
-                        //       );
-                        //     }
-                        //   },
-                        //   // child: Container(),
-                        // );
-                        // await insert(newNote).then((_) => Navigator.of(context).pop());
                       },
                       icon: const Icon(Icons.done)),
+                  IconButton(
+                      onPressed: () {
+                        showColorPickerDialog(context);
+                      },
+                      icon: const Icon(
+                        Icons.palette_outlined,
+                      ))
                 ]),
             body: SafeArea(
               child: Padding(
@@ -145,5 +139,35 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         },
       ),
     );
+  }
+
+  Future<dynamic> showColorPickerDialog(BuildContext context) {
+    return showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Pick a color!'),
+                              content: SingleChildScrollView(
+                                child: BlockPicker(
+                                  availableColors: AppTheme.cardsColors,
+                                  pickerColor: selectedColor!, //default color
+                                  onColorChanged: (Color color) {
+                                    //on color picked
+                                    setState(() {
+                                      selectedColor = color;
+                                    });
+                                  },
+                                ),
+                              ),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  child: const Text('DONE'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          });
   }
 }
