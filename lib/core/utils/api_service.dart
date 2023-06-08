@@ -31,4 +31,12 @@ class ApiService {
         await dio.delete("${Constants.notesBaseUrl}$endPoint/$noteId.json");
     return response.data;
   }
+
+  Future<Map<String, dynamic>> put(
+      {required String endPoint,required String noteId, required Map<String, dynamic> noteMap}) async {
+    Response response = await dio.put(
+        "${Constants.notesBaseUrl}$endPoint/$noteId.json",
+        data: jsonEncode(noteMap));
+    return response.data;
+  }
 }

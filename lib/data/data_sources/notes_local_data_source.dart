@@ -16,4 +16,17 @@ class NotesLocalDataSource {
   void deleteNote(NoteEntity note) {
     note.delete();
   }
+
+  void updateNote(String noteId, Map<String, dynamic> updatedNote) {
+    var oldNote = box.get(noteId);
+    oldNote!.title = updatedNote["title"];
+    oldNote.body = updatedNote["body"];
+    oldNote.color = updatedNote["color"];
+    oldNote.save();
+  }
+
+  void clearNotes() {
+    box.clear();
+  }
+  
 }

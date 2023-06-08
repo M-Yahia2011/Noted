@@ -8,5 +8,5 @@ abstract class NotesRepoAbstract {
   // sent as entity recieved as entity and repo will change it to model
   Future<Either<Failure, NoteEntity>> addNote(Map<String, dynamic> noteMap);
   Future<Either<Failure, void>> deleteNote(NoteEntity note);
-
+  Future<Either<Failure, NoteEntity>> updateNote(Map<String,dynamic> noteMap);
 }

@@ -28,4 +28,14 @@ class NotesRemoteDatasource extends DatasourceAbstract {
   Future<void> deleteNote(String noteId) async {
     await apiService.delete(endPoint: "notes", noteId: noteId);
   }
+
+  Future<NoteEntity> updateNote(Map<String, dynamic> noteMap) async {
+    String noteId = noteMap["id"];
+    noteMap.remove("id");
+    var jsonData = await apiService.put(
+        endPoint: 'notes', noteMap: noteMap, noteId: noteId);
+    jsonData["id"] = noteId;
+    var newNote = NoteModel.fromJson(jsonData);
+    return newNote;
+  }
 }
