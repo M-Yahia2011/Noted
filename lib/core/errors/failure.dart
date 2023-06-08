@@ -31,15 +31,18 @@ class ServerFailure extends Failure {
     }
   }
   factory ServerFailure.fromResponse(Response response) {
-    switch (response.statusCode) {
-      case 404:
-        return ServerFailure("Your request was not found!");
-      case 401:
-        return ServerFailure("faild to authinticate");
-      case 403:
-        return ServerFailure("You don't have the right permission!");
-      default:
-        return ServerFailure("Unknow Error");
-    }
+    return ServerFailure(response.statusMessage!);
+    // switch (response.statusCode) {
+    // case 404:
+    //   return ServerFailure("Your request was not found!");
+    // case 401:
+    //   return ServerFailure("faild to authinticate");
+    // case 403:
+    //   return ServerFailure("You don't have the right permission!");
+    //   case 405:
+
+    // default:
+    // return ServerFailure("Unknow Error");
+    // }
   }
 }

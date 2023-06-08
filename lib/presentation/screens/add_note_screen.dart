@@ -78,7 +78,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                             .then((_) async {
                           await BlocProvider.of<FetchNotesCubit>(context)
                               .fetchAllNotes();
-                          // ignore: use_build_context_synchronously
+
                           if (state is AddNoteFailed) {
                             if (mounted) {
                               showDialog(
@@ -90,7 +90,9 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                                   }));
                             }
                           }
-                          // Navigator.of(context).pop();
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                          }
                         });
                       },
                       icon: const Icon(Icons.done)),
@@ -130,7 +132,10 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                       ),
                     ),
                     if (state is AddNoteLoading)
-                      const Center(child: CircularProgressIndicator()),
+                      Center(
+                          child: CircularProgressIndicator(
+                        color: AppTheme.bgColor,
+                      )),
                   ],
                 ),
               ),
@@ -143,31 +148,31 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
 
   Future<dynamic> showColorPickerDialog(BuildContext context) {
     return showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Pick a color!'),
-                              content: SingleChildScrollView(
-                                child: BlockPicker(
-                                  availableColors: AppTheme.cardsColors,
-                                  pickerColor: selectedColor!, //default color
-                                  onColorChanged: (Color color) {
-                                    //on color picked
-                                    setState(() {
-                                      selectedColor = color;
-                                    });
-                                  },
-                                ),
-                              ),
-                              actions: <Widget>[
-                                ElevatedButton(
-                                  child: const Text('DONE'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          });
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Pick a color!'),
+            content: SingleChildScrollView(
+              child: BlockPicker(
+                availableColors: AppTheme.cardsColors,
+                pickerColor: selectedColor!, //default color
+                onColorChanged: (Color color) {
+                  //on color picked
+                  setState(() {
+                    selectedColor = color;
+                  });
+                },
+              ),
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                child: const Text('DONE'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 }

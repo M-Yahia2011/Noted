@@ -11,7 +11,7 @@ class NotesRemoteDatasource extends DatasourceAbstract {
 
   @override
   Future<List<NoteEntity>> fetchAllNotes() async {
-    var jsonData = await apiService.get(endPoint: 'notes');
+    var jsonData = await apiService.get(endPoint: 'notes.json');
     List<NoteEntity> notes = HelperFunctions.jsonListToNotesList(jsonData);
     HelperFunctions.saveAllNotesLocally(notes);
     return notes;
@@ -19,8 +19,13 @@ class NotesRemoteDatasource extends DatasourceAbstract {
 
   Future<NoteEntity> addNote(Map<String, dynamic> noteMap) async {
     var jsonData =
-        await apiService.post(endPoint: 'notes', noteMap: noteMap);
-    var newNote = NoteModel.fromJson(jsonData);
+        await apiService.post(endPoint: 'notes.json', noteMap: noteMap);
+    noteMap["id"] = jsonData["name"];
+    var newNote = NoteModel.fromJson(noteMap);
     return newNote;
+  }
+
+  Future<void> deleteNote(String noteId) async {
+    await apiService.delete(endPoint: "notes", noteId: noteId);
   }
 }
