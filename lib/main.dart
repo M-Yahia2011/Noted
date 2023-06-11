@@ -8,8 +8,14 @@ import 'core/utils/api_service.dart';
 import 'data/data_sources/notes_local_data_source.dart';
 import 'data/data_sources/notes_remote_data_source.dart';
 import 'data/repos/notes_repo_impl.dart';
-
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 void main() async {
+
+    WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await Hive.initFlutter();
   Hive.registerAdapter(NoteEntityAdapter());
   await Hive.openBox<NoteEntity>("notes_box");
