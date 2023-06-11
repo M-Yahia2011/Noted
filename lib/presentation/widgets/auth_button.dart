@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class AuthButton extends StatelessWidget {
@@ -13,13 +12,16 @@ class AuthButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
         width: double.infinity,
-        height: 48,
+        height: 56,
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
             onPressed: function,
             child: Text(
               buttonText,
-              style: const TextStyle(fontSize: 16, color: Colors.white),
+              style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
             )));
   }
 }

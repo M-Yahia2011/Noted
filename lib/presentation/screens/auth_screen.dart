@@ -53,18 +53,18 @@ class _AuthScreenState extends State<AuthScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: 80,
+                    height: 88,
                   ),
                   const Text(
                     "Noted",
                     style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
-                    height: 32,
+                    height: 16,
                   ),
-                  const Text("Sign-in to your account!"),
+                  const Text("Welcom back!"),
                   const SizedBox(
-                    height: 32,
+                    height: 16,
                   ),
                   AuthTextField(
                     hintText: "E-mail",
@@ -81,7 +81,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     textEditingController: passwordTextController,
                     focusNode: passwordFocusNode,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 16),
                   Row(
                     children: [
                       const Spacer(),
@@ -89,28 +89,42 @@ class _AuthScreenState extends State<AuthScreen> {
                           onTap: () {
                             // TODO: implemente forgot password feature
                           },
-                          child: const Text("Forgot password?"))
+                          child: const Text(
+                            "Forgot password?",
+                            style: TextStyle(color: Colors.blue),
+                          ))
                     ],
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),
                   AuthButton(
                       buttonText: "Login",
                       function: () async {
                         _formKey.currentState!.save();
                         if (_formKey.currentState!.validate()) {
                           var authInstance = FirebaseAuth.instance;
-                          // authInstance.signInWithEmailAndPassword(email: email, password: password);
-                          UserCredential userCredential =
-                              await authInstance.createUserWithEmailAndPassword(
-                                  email: emailTextController.text,
-                                  password: passwordTextController.text);
-                          print(userCredential.user!.email);
+                          authInstance.signInWithEmailAndPassword(
+                              email: emailTextController.text,
+                              password: passwordTextController.text);
+                          // UserCredential userCredential =
+                          //     await authInstance.createUserWithEmailAndPassword(
+                          //         email: emailTextController.text,
+                          //         password: passwordTextController.text);
+                          // print(userCredential.user!.email);
                         }
                       }),
                   const SizedBox(height: 32),
                   const TwoDividerWithTextInbetween("or"),
                   const SizedBox(height: 32),
                   const SocialTileAuthCard(imagePath: "assets/google_logo.png"),
+                  const SizedBox(height: 32),
+                  GestureDetector(
+                      onTap: () {
+                        // TODO: implemente forgot register page
+                      },
+                      child: const Text(
+                        "Not a user? Register Now!",
+                        style: TextStyle(color: Colors.blue),
+                      ))
                 ],
               ),
             ),

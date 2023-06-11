@@ -27,11 +27,17 @@ class AuthTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TextStyle(color: Colors.grey[500]),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.white),
+          borderRadius: BorderRadius.circular(32),
+        ),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.white),
+          borderRadius: BorderRadius.circular(32),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.grey.shade400),
+          borderRadius: BorderRadius.circular(32),
         ),
         fillColor: Colors.grey.shade200,
         filled: true,
@@ -44,6 +50,10 @@ class AuthTextField extends StatelessWidget {
           final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$');
           if (!emailRegex.hasMatch(value)) {
             return "Please, Enter a valid E-mail";
+          }
+        } else if (textFieldType == AuthTextFieldType.password) {
+          if (value.length < 6) {
+            return "Password should be at least 6 characters";
           }
         }
         return null;
@@ -63,9 +73,8 @@ class AuthTextField extends StatelessWidget {
           : TextInputAction.done,
       onTapOutside: (event) => FocusScope.of(context).unfocus(),
       onSaved: (value) {
-        print(value);
+        // the logic here is done when you inintiate _formKey.currentState.save()
         textEditingController.text = value!.trim();
-        print(textEditingController.text);
       },
     );
   }
