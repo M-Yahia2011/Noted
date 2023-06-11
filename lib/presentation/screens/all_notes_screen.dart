@@ -5,8 +5,8 @@ import 'package:noted/domain/use_cases/delete_note_use_case.dart';
 import 'package:noted/main.dart';
 import 'package:noted/presentation/screens/add_note_screen.dart';
 import '../../core/utils/app_theme.dart';
-import '../manager/cubits/delete_note_cubit/delete_note_cubit.dart';
-import '../manager/cubits/fetch_notes_cubit/fetch_notes_cubit.dart';
+import '../manager/cubits/note_cubits/delete_note_cubit/delete_note_cubit.dart';
+import '../manager/cubits/note_cubits/fetch_notes_cubit/fetch_notes_cubit.dart';
 import '../widgets/notes_gridview.dart';
 
 class AllNotesScreen extends StatefulWidget {

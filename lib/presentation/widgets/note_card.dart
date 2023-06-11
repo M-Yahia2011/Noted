@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:noted/domain/entities/note_entity.dart';
-import 'package:noted/presentation/manager/cubits/delete_note_cubit/delete_note_cubit.dart';
 import 'package:noted/presentation/screens/note_details_screen.dart';
 import 'package:intl/intl.dart' as intl;
 import '../../core/utils/app_theme.dart';
-import '../manager/cubits/fetch_notes_cubit/fetch_notes_cubit.dart';
+import '../manager/cubits/note_cubits/delete_note_cubit/delete_note_cubit.dart';
+import '../manager/cubits/note_cubits/fetch_notes_cubit/fetch_notes_cubit.dart';
 
 class NoteCard extends StatelessWidget {
   final NoteEntity note;

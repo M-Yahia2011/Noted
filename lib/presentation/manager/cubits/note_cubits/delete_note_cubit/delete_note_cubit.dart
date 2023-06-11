@@ -4,7 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:noted/domain/use_cases/delete_note_use_case.dart';
 
-import '../../../../domain/entities/note_entity.dart';
+import '../../../../../domain/entities/note_entity.dart';
+
+
 
 part 'delete_note_state.dart';
 

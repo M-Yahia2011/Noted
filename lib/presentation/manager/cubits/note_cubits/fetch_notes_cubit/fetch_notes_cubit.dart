@@ -4,9 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:noted/domain/use_cases/fetch_notes_use_case.dart';
 
-import '../../../../domain/entities/note_entity.dart';
-
-
+import '../../../../../domain/entities/note_entity.dart';
 
 part 'fetch_notes_state.dart';
 
