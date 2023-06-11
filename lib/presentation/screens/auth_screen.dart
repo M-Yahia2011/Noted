@@ -1,55 +1,116 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:noted/core/enums.dart';
 
-enum AuthAction { login, register }
+import '../widgets/auth_button.dart';
+import '../widgets/auth_text_field.dart';
+import '../widgets/social_tile_auth.dart';
+import '../widgets/two_dividers_with_text_inbetween.dart';
 
-class AuthScreen extends StatelessWidget {
-  static const routeName = '/auth';
-
+class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
+  static const String routeName = "/auth_screen";
+
+  @override
+  State<AuthScreen> createState() => _AuthScreenState();
+}
+
+class _AuthScreenState extends State<AuthScreen> {
+  late TextEditingController emailTextController;
+  late TextEditingController passwordTextController;
+  late FocusNode emailFocusNode;
+  late FocusNode passwordFocusNode;
+  final _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    super.initState();
+    emailTextController = TextEditingController();
+    passwordTextController = TextEditingController();
+    emailFocusNode = FocusNode();
+    passwordFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    emailTextController.dispose();
+    passwordTextController.dispose();
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: SingleChildScrollView(
-            child: Container(
-              width: deviceSize.width,
-              height: deviceSize.height,
-              color: Colors.white,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Form(
+              key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 8.0),
-                          child: FittedBox(
-                            child: Text(
-                              'NOTED',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: deviceSize.width / 10.roundToDouble(),
-                                // fontFamily: GoogleFonts(),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 80,
                   ),
-                  Flexible(
-                    flex: deviceSize.width > 600 ? 2 : 1,
-                    child: const AuthCard(),
+                  const Text(
+                    "Noted",
+                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                   ),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  const Text("Sign-in to your account!"),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  AuthTextField(
+                    hintText: "E-mail",
+                    textFieldType: AuthTextFieldType.email,
+                    isObsecured: false,
+                    textEditingController: emailTextController,
+                    focusNode: emailFocusNode,
+                  ),
+                  const SizedBox(height: 16),
+                  AuthTextField(
+                    hintText: "Password",
+                    textFieldType: AuthTextFieldType.password,
+                    isObsecured: true,
+                    textEditingController: passwordTextController,
+                    focusNode: passwordFocusNode,
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      const Spacer(),
+                      GestureDetector(
+                          onTap: () {
+                            // TODO: implemente forgot password feature
+                          },
+                          child: const Text("Forgot password?"))
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  AuthButton(
+                      buttonText: "Login",
+                      function: () async {
+                        _formKey.currentState!.save();
+                        if (_formKey.currentState!.validate()) {
+                          var authInstance = FirebaseAuth.instance;
+                          // authInstance.signInWithEmailAndPassword(email: email, password: password);
+                          UserCredential userCredential =
+                              await authInstance.createUserWithEmailAndPassword(
+                                  email: emailTextController.text,
+                                  password: passwordTextController.text);
+                          print(userCredential.user!.email);
+                        }
+                      }),
+                  const SizedBox(height: 32),
+                  const TwoDividerWithTextInbetween("or"),
+                  const SizedBox(height: 32),
+                  const SocialTileAuthCard(imagePath: "assets/google_logo.png"),
                 ],
               ),
             ),
@@ -57,292 +118,5 @@ class AuthScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class AuthCard extends StatefulWidget {
-  const AuthCard({super.key});
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _AuthCardState createState() => _AuthCardState();
-}
-
-class _AuthCardState extends State<AuthCard> {
-  final GlobalKey<FormState> _formKey = GlobalKey();
-  final Map<String, String> _authData = {
-    'email': '',
-    'password': '',
-  };
-  var _isLoading = false;
-  late String _password;
-  bool isHidden = true;
-  Future<void> _submit(String action) async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-    _formKey.currentState!.save();
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      // if (action == 'login') {
-      //   await Provider.of<Auth>(context, listen: false)
-      //       .login(_authData['email'], _authData['password']);
-      // } else {
-      //   await Provider.of<Auth>(context, listen: false).register(
-      //       _authData['name'], _authData['email'], _authData['password']);
-      // }
-    } catch (error) {
-      setState(() {
-        _isLoading = false;
-      });
-      _showDialogue();
-    }
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
-  void _showDialogue() {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Error'),
-        content: const Text('something went wrong'),
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.of(ctx).pop();
-              },
-              child: const Text('Approve'))
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
-
-    return DefaultTabController(
-        length: 2,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(children: [
-            TabBar(
-              tabs: const [
-                Tab(text: 'SIGN IN'),
-                Tab(text: 'SIGN UP'),
-              ],
-              labelColor: Theme.of(context).primaryColor,
-            ),
-            const SizedBox(height: 15),
-            Flexible(
-              child: Form(
-                key: _formKey,
-                child: TabBarView(children: [
-                  SizedBox(
-                    height: deviceSize.height * 0.4,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          style: const TextStyle(fontSize: 18),
-                          decoration:
-                              const InputDecoration(labelText: 'E-Mail'),
-                          keyboardType: TextInputType.emailAddress,
-                          textInputAction: TextInputAction.next,
-                          onEditingComplete: () =>
-                              FocusScope.of(context).nextFocus(),
-                          validator: (value) {
-                            if (value!.isEmpty ||
-                                !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                    .hasMatch(value)) {
-                              return 'Invalid email!';
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            _authData['email'] = value!;
-                          },
-                        ),
-                        TextFormField(
-                          style: const TextStyle(fontSize: 18),
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            suffixIcon: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  isHidden = !isHidden;
-                                });
-                              },
-                              child: isHidden
-                                  ? const Icon(Icons.visibility_off)
-                                  : const Icon(Icons.visibility),
-                            ),
-                          ),
-                          obscureText: isHidden,
-                          textInputAction: TextInputAction.done,
-                          onEditingComplete: () =>
-                              FocusScope.of(context).unfocus(),
-                          validator: (value) {
-                            if (value!.isEmpty || value.length < 5) {
-                              return 'Password is too short!';
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            _authData['password'] = value!;
-                          },
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        _isLoading
-                            ? const CircularProgressIndicator()
-                            : ElevatedButton(
-                                onPressed: () => _submit('login'),
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 80.0, vertical: 10.0),
-                                  backgroundColor:
-                                      Theme.of(context).primaryColor,
-                                ),
-                                child: const Text(
-                                  'LOGIN',
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              ),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            TextFormField(
-                              style: const TextStyle(fontSize: 18),
-                              decoration:
-                                  const InputDecoration(labelText: 'Username'),
-                              textInputAction: TextInputAction.next,
-                              onEditingComplete: () =>
-                                  FocusScope.of(context).nextFocus(),
-                              onSaved: (value) {
-                                _authData['name'] = value!;
-                              },
-                            ),
-                            TextFormField(
-                              style: const TextStyle(fontSize: 18),
-                              decoration:
-                                  const InputDecoration(labelText: 'E-Mail'),
-                              keyboardType: TextInputType.emailAddress,
-                              textInputAction: TextInputAction.next,
-                              onEditingComplete: () =>
-                                  FocusScope.of(context).nextFocus(),
-                              validator: (value) {
-                                if (value!.isEmpty ||
-                                    !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                        .hasMatch(value)) {
-                                  return 'Invalid email!';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                _authData['email'] = value!;
-                              },
-                            ),
-                            TextFormField(
-                              style: const TextStyle(fontSize: 18),
-                              decoration: InputDecoration(
-                                labelText: 'Password',
-                                suffixIcon: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      isHidden = !isHidden;
-                                    });
-                                  },
-                                  child: isHidden
-                                      ? const Icon(Icons.visibility_off)
-                                      : const Icon(Icons.visibility),
-                                ),
-                              ),
-                              obscureText: true,
-                              textInputAction: TextInputAction.next,
-                              onEditingComplete: () =>
-                                  FocusScope.of(context).nextFocus(),
-                              validator: (value) {
-                                _password = value!;
-                                if (value.isEmpty || value.length < 5) {
-                                  return 'Password is too short!';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                _authData['password'] = value!;
-                              },
-                            ),
-                            TextFormField(
-                              style: const TextStyle(fontSize: 18),
-                              decoration: InputDecoration(
-                                labelText: 'Confirm Password',
-                                suffixIcon: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      isHidden = !isHidden;
-                                    });
-                                  },
-                                  child: isHidden
-                                      ? const Icon(Icons.visibility_off)
-                                      : const Icon(Icons.visibility),
-                                ),
-                              ),
-                              obscureText: true,
-                              textInputAction: TextInputAction.done,
-                              onEditingComplete: () =>
-                                  FocusScope.of(context).unfocus(),
-                              validator: (value) {
-                                if (value != _password) {
-                                  return 'Passwords do not match!';
-                                }
-                                return null;
-                              },
-                            ),
-                            const Expanded(
-                              child: SizedBox(),
-                            )
-                          ],
-                        ),
-                      ),
-                      _isLoading
-                          ? const CircularProgressIndicator()
-                          : ElevatedButton(
-                              onPressed: () {
-                                _submit('register');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 80.0, vertical: 10.0),
-                                backgroundColor: Theme.of(context).primaryColor,
-                              ),
-                              child: const Text(
-                                'SIGN UP',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ),
-                    ],
-                  ),
-                ]),
-              ),
-            ),
-          ]),
-        ));
   }
 }

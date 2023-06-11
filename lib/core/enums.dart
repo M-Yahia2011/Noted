@@ -1,0 +1,4 @@
+enum AuthTextFieldType{
+  email,
+  password,
+}
