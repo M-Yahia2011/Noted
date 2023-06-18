@@ -37,7 +37,7 @@ class NotesRepository extends NotesRepoAbstract {
         return right(localNotes);
       }
     } catch (e) {
-      if (e is DioError) {
+      if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
       }
 
@@ -54,7 +54,7 @@ class NotesRepository extends NotesRepoAbstract {
       notesLocalDataSource.addNote(newNote);
       return right(newNote);
     } catch (e) {
-      if (e is DioError) {
+      if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
       }
       return left(ServerFailure(e.toString()));
@@ -68,7 +68,7 @@ class NotesRepository extends NotesRepoAbstract {
       await notesRemoteDatasource.deleteNote(note.id);
       return right(null);
     } catch (e) {
-      if (e is DioError) {
+      if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
       }
       return left(ServerFailure(e.toString()));
@@ -85,7 +85,7 @@ class NotesRepository extends NotesRepoAbstract {
       notesLocalDataSource.updateNote(noteId, noteMap);
       return right(updatedNote);
     } catch (e) {
-      if (e is DioError) {
+      if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
       }
       return left(ServerFailure(e.toString()));

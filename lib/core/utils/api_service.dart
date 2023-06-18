@@ -7,7 +7,7 @@ class ApiService {
   final Dio dio;
 
   ApiService({required this.dio});
-// TODO: token in the post request
+// TODO: user token in the post request
 
   Future<Map<String, dynamic>> get({required String endPoint}) async {
     Response response = await dio.get("${Constants.notesBaseUrl}$endPoint");
