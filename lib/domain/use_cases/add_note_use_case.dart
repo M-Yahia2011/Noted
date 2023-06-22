@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:noted/core/errors/failure.dart';
-import 'package:noted/data/repos/notes_repo_impl.dart';
-import 'package:noted/domain/entities/note_entity.dart';
+import '/core/errors/failure.dart';
+import '/data/repos/notes_repo_impl.dart';
+import '/domain/entities/note_entity.dart';
 
 import 'use_case.dart';
 

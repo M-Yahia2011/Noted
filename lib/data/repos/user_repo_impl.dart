@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:noted/core/errors/failure.dart';
-import 'package:noted/data/data_sources/firebase_auth.dart';
-import 'package:noted/domain/entities/user_entity.dart';
-import 'package:noted/domain/repos/user_repo_abstract.dart';
+import '/core/errors/failure.dart';
+import '/data/data_sources/firebase_auth.dart';
+import '/domain/entities/user_entity.dart';
+import '/domain/repos/user_repo_abstract.dart';
 
 class UserRepoImpl extends UserRepoAbstract {
   final AuthService _authService;

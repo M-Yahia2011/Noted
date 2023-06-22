@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noted/data/data_sources/firebase_auth.dart';
-import 'package:noted/presentation/screens/register_screen.dart';
+import '/data/data_sources/firebase_auth.dart';
+import '/presentation/screens/register_screen.dart';
 import '/presentation/screens/sign_in_screen.dart';
 import '../../presentation/screens/add_note_screen.dart';
 import '../../presentation/screens/all_notes_screen.dart';
@@ -21,7 +21,6 @@ class AppRouter {
             return const RegisterScreen();
 
           default:
-            print(AuthService.authInstance.currentUser);
             if (AuthService.authInstance.currentUser != null) {
               return const AllNotesScreen();
             } else {

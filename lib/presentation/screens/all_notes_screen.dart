@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:noted/data/data_sources/firebase_auth.dart';
-import 'package:noted/data/data_sources/notes_local_data_source.dart';
-import 'package:noted/data/repos/notes_repo_impl.dart';
-import 'package:noted/domain/use_cases/delete_note_use_case.dart';
-import 'package:noted/main.dart';
-import 'package:noted/presentation/screens/add_note_screen.dart';
-import 'package:noted/presentation/screens/sign_in_screen.dart';
+import '/data/data_sources/firebase_auth.dart';
+import '/data/repos/notes_repo_impl.dart';
+import '/domain/use_cases/delete_note_use_case.dart';
+import '/main.dart';
+import '/presentation/screens/add_note_screen.dart';
+import '/presentation/screens/sign_in_screen.dart';
 import '../../core/utils/app_theme.dart';
 import '../manager/cubits/note_cubits/delete_note_cubit/delete_note_cubit.dart';
 import '../manager/cubits/note_cubits/fetch_notes_cubit/fetch_notes_cubit.dart';
@@ -58,8 +57,9 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
                   ),
                 ),
               ),
+              const Spacer(),
               ListTile(
-                titleAlignment: ListTileTitleAlignment.center,
+                tileColor: Colors.blue.shade100,
                 title: const Text("Sign Out"),
                 onTap: () async {
                   await AuthService.authInstance.signOut();
@@ -69,13 +69,6 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
                   }
                 },
               ),
-              ListTile(
-                titleAlignment: ListTileTitleAlignment.center,
-                title: const Text("Clear Notes Locally"),
-                onTap: () async {
-                  NotesLocalDataSource().clearNotes();
-                },
-              )
             ],
           )),
           appBar: AppBar(
@@ -84,9 +77,11 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
             elevation: 0,
             backgroundColor: Colors.transparent,
             actions: [
-              IconButton(onPressed: () {
-                // TODO: Search feature
-              }, icon: const Icon(Icons.search))
+              IconButton(
+                  onPressed: () {
+                    // TODO: Search feature
+                  },
+                  icon: const Icon(Icons.search))
             ],
           ),
           body: BlocBuilder<FetchNotesCubit, FetchNotesState>(

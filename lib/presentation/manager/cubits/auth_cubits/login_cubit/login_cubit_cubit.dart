@@ -2,7 +2,7 @@
 import 'package:bloc/bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
-import 'package:noted/domain/use_cases/auth_use_cases/sign_in_use_case.dart';
+import '/domain/use_cases/auth_use_cases/sign_in_use_case.dart';
 
 import '../../../../../domain/entities/user_entity.dart';
 

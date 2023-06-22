@@ -1,5 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:noted/data/data_sources/firebase_auth.dart';
+import '/data/data_sources/firebase_auth.dart';
 
 class FirebaseApiService {
   static final String _userId = AuthService.authInstance.currentUser!.uid;

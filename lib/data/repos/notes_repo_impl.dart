@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import '/data/data_sources/notes_local_data_source.dart';
 import '/data/data_sources/notes_remote_data_source.dart';
 import '/domain/entities/note_entity.dart';
@@ -13,15 +12,16 @@ class NotesRepository extends NotesRepoAbstract {
   NotesRepository(
       {required this.notesRemoteDatasource,
       required this.notesLocalDataSource});
-  bool _isCacheStale(List<NoteEntity> remoteData, List<NoteEntity> localData) {
-    return localData.length != remoteData.length ||
-        !listEquals(localData, remoteData);
-  }
+
+  // bool _isCacheStale(List<NoteEntity> remoteData, List<NoteEntity> localData) {
+  //   return localData.length != remoteData.length ||
+  //       !listEquals(localData, remoteData);
+  // }
 
   @override
   Future<Either<Failure, List<NoteEntity>>> getAllNotes() async {
     try {
-      List<NoteEntity> localNotes = notesLocalDataSource.fetchAllNotes();
+      // List<NoteEntity> localNotes = notesLocalDataSource.fetchAllNotes();
       // if (localNotes.isNotEmpty) {
       //   return right(localNotes);
       // }

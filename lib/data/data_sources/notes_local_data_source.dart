@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:noted/core/utils/constants.dart';
+import '/core/utils/constants.dart';
 import '../../domain/entities/note_entity.dart';
 
 class NotesLocalDataSource {
@@ -17,10 +17,8 @@ class NotesLocalDataSource {
     note.delete();
   }
 
-
-
   void clearNotes() {
     box.clear();
   }
-  
+  // TODO: use firebase offline solution instead of hive
 }

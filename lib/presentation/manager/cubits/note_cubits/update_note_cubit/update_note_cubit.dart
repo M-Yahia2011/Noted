@@ -2,8 +2,8 @@
 import 'package:bloc/bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
-import 'package:noted/domain/entities/note_entity.dart';
-import 'package:noted/domain/use_cases/update_note_use_case.dart';
+import '/domain/entities/note_entity.dart';
+import '/domain/use_cases/update_note_use_case.dart';
 
 part 'update_note_state.dart';
 

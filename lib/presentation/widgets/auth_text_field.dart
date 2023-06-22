@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:noted/core/enums.dart';
+import '/core/enums.dart';
 
 class AuthTextField extends StatelessWidget {
   const AuthTextField({

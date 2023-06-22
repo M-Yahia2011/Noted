@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:noted/core/utils/app_theme.dart';
+import '/core/utils/app_theme.dart';
 
 class TitleTextField extends StatelessWidget {
   const TitleTextField({

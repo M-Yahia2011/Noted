@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:noted/presentation/screens/register_screen.dart';
+import '/presentation/screens/register_screen.dart';
 import '/core/enums.dart';
 import '/presentation/manager/cubits/auth_cubits/login_cubit/login_cubit_cubit.dart';
 import '/presentation/screens/all_notes_screen.dart';

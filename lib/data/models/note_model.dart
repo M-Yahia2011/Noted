@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:noted/domain/entities/note_entity.dart';
+import '/domain/entities/note_entity.dart';
 
 class NoteModel extends NoteEntity {
   final String noteId;

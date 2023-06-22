@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:noted/core/utils/app_theme.dart';
-import 'package:noted/data/data_sources/firebase_auth.dart';
-import 'package:noted/data/repos/user_repo_impl.dart';
-import 'package:noted/domain/use_cases/auth_use_cases/sign_in_use_case.dart';
-import 'package:noted/domain/use_cases/fetch_notes_use_case.dart';
-import 'package:noted/main.dart';
+import '/core/utils/app_theme.dart';
+import '/data/data_sources/firebase_auth.dart';
+import '/data/repos/user_repo_impl.dart';
+import '/domain/use_cases/auth_use_cases/sign_in_use_case.dart';
+import '/domain/use_cases/fetch_notes_use_case.dart';
+import '/main.dart';
 import 'core/utils/app_router.dart';
 import 'data/repos/notes_repo_impl.dart';
 import 'domain/use_cases/auth_use_cases/register_use_case.dart';
