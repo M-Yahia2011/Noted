@@ -12,11 +12,11 @@ class UpdateNoteCubit extends Cubit<UpdateNoteState> {
 
   final UpdateNoteUsecase _updateNoteUsecase;
 
-    Future<void> updateNote(Map<String,dynamic> noteMap) async {
+    Future<void> updateNote(NoteEntity note) async {
 
     emit(UpdateNoteLoading());
     
-    var result = await _updateNoteUsecase.execute(noteMap);
+    var result = await _updateNoteUsecase.execute(note);
 
     result.fold((failure) {
       emit(UpdateNoteFailure(failure.message));

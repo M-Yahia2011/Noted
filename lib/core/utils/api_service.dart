@@ -1,16 +1,21 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
+import '../../data/data_sources/firebase_auth.dart';
 import 'constants.dart';
 
 class ApiService {
-  final Dio dio;
-
+  Dio dio;
   ApiService({required this.dio});
-// TODO: user token in the post request
+  String? token;
+  // var user = FirebaseAuth.instance.currentUser;
 
   Future<Map<String, dynamic>> get({required String endPoint}) async {
-    Response response = await dio.get("${Constants.notesBaseUrl}$endPoint");
+    token = await AuthService.getToken();
+
+    Response response = await dio.get(
+      "${Constants.notesBaseUrl}$endPoint",
+      // options: Options(headers: {'Authorization': 'Bearer $token'}),
+    );
     // firebase return null if there are no notes in the collection
     if (response.data == null) {
       return {};
@@ -20,23 +25,30 @@ class ApiService {
 
   Future<Map<String, dynamic>> post(
       {required String endPoint, required Map<String, dynamic> noteMap}) async {
-    Response response = await dio.post("${Constants.notesBaseUrl}$endPoint",
-        data: jsonEncode(noteMap));
+    Response response = await dio.post(
+      "${Constants.notesBaseUrl}$endPoint",
+      data: jsonEncode(noteMap),
+      // options: Options(headers: {'Authorization': 'Bearer $token'}),
+    );
     return response.data;
   }
 
   Future<void> delete(
       {required String endPoint, required String noteId}) async {
-    Response response =
-        await dio.delete("${Constants.notesBaseUrl}$endPoint/$noteId.json");
+    Response response = await dio.delete(
+        "${Constants.notesBaseUrl}$endPoint/$noteId.json",
+        options: Options(headers: {'Authorization': 'Bearer $token'}));
     return response.data;
   }
 
   Future<Map<String, dynamic>> put(
-      {required String endPoint,required String noteId, required Map<String, dynamic> noteMap}) async {
+      {required String endPoint,
+      required String noteId,
+      required Map<String, dynamic> noteMap}) async {
     Response response = await dio.put(
         "${Constants.notesBaseUrl}$endPoint/$noteId.json",
-        data: jsonEncode(noteMap));
+        data: jsonEncode(noteMap),
+        options: Options(headers: {'Authorization': 'Bearer $token'}));
     return response.data;
   }
 }

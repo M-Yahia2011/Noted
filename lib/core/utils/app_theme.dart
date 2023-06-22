@@ -3,17 +3,23 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static ThemeData mainTheme = ThemeData(
-      appBarTheme: const AppBarTheme(
-          elevation: 0,
-          color: Colors.transparent,
-          foregroundColor: Colors.black));
+    appBarTheme: const AppBarTheme(
+        elevation: 0, color: Colors.transparent, foregroundColor: Colors.black),
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(fontSize: 16),
+      bodyMedium: TextStyle(fontSize: 16),
+    ),
+  );
+
   static Color bgColor = const Color(0xffe2e2fe);
   static Color mainColor = const Color(0xff000633);
   static Color accentColor = const Color(0xff0065ff);
   static List<Color> cardsColors = [
-    Colors.white,
+    Colors.white54,
+    Colors.teal,
     Colors.red.shade100,
     Colors.yellow.shade100,
+    Colors.orange,
     Colors.blue.shade100,
     Colors.orange.shade100,
     Colors.pink.shade100,

@@ -18,7 +18,7 @@ class UserRepoImpl extends UserRepoAbstract {
 
       return right(UserEntity(
           id: result.user!.uid,
-          image: result.user!.photoURL!,
+          image: result.user?.photoURL,
           email: result.user!.email!));
     } catch (e) {
       if (e is DioException) {
@@ -37,7 +37,7 @@ class UserRepoImpl extends UserRepoAbstract {
 
       return right(UserEntity(
           id: result.user!.uid,
-          image: result.user!.photoURL!,
+          image: result.user!.photoURL?? "",
           email: result.user!.email!));
     } catch (e) {
       if (e is DioException) {

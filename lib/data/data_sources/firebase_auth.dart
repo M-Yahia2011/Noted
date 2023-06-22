@@ -2,7 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
   // this is like dio
-  FirebaseAuth authInstance = FirebaseAuth.instance;
+  static FirebaseAuth authInstance = FirebaseAuth.instance;
+  static Future<String?> getToken() async {
+    return authInstance.currentUser?.getIdToken();
+  }
 
   Future<UserCredential> signIn(String email, String password) async {
     return await authInstance.signInWithEmailAndPassword(

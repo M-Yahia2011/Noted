@@ -10,11 +10,13 @@ environment:
     sdk: ">=2.19.3 <3.0.0"
 
 dependencies:
+    connectivity_plus: ^4.0.1
     dartz: ^0.10.1
     dio: ^5.1.1
     fast_color_picker: ^0.1.1
     firebase_auth: ^4.6.2
     firebase_core: ^2.13.1
+    firebase_database: ^10.2.3
     flutter:
         sdk: flutter
     flutter_bloc: ^8.1.2
@@ -28,6 +30,7 @@ dependencies:
     hive: ^2.2.3
     hive_flutter: ^1.1.0
     intl: ^0.18.0
+    modal_progress_hud_nsn: ^0.4.0
 
 dev_dependencies:
     flutter_test:

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:noted/data/data_sources/firebase_auth.dart';
+import 'package:noted/data/data_sources/notes_local_data_source.dart';
 import 'package:noted/data/repos/notes_repo_impl.dart';
 import 'package:noted/domain/use_cases/delete_note_use_case.dart';
 import 'package:noted/main.dart';
 import 'package:noted/presentation/screens/add_note_screen.dart';
+import 'package:noted/presentation/screens/sign_in_screen.dart';
 import '../../core/utils/app_theme.dart';
 import '../manager/cubits/note_cubits/delete_note_cubit/delete_note_cubit.dart';
 import '../manager/cubits/note_cubits/fetch_notes_cubit/fetch_notes_cubit.dart';
@@ -19,20 +22,71 @@ class AllNotesScreen extends StatefulWidget {
 
 class _AllNotesScreenState extends State<AllNotesScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    await BlocProvider.of<FetchNotesCubit>(context).fetchAllNotes();
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
           DeleteNoteCubit(DeleteNoteUsecase(getIt.get<NotesRepository>())),
       child: SafeArea(
         child: Scaffold(
-          drawer: const Drawer(),
+          drawer: Drawer(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 50,
+                width: double.infinity,
+                color: Colors.black54,
+                child: const Center(
+                  child: Text(
+                    "NOTED",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              ListTile(
+                titleAlignment: ListTileTitleAlignment.center,
+                title: const Text("Sign Out"),
+                onTap: () async {
+                  await AuthService.authInstance.signOut();
+                  if (context.mounted) {
+                    Navigator.of(context)
+                        .pushReplacementNamed(SignInScreen.routeName);
+                  }
+                },
+              ),
+              ListTile(
+                titleAlignment: ListTileTitleAlignment.center,
+                title: const Text("Clear Notes Locally"),
+                onTap: () async {
+                  NotesLocalDataSource().clearNotes();
+                },
+              )
+            ],
+          )),
           appBar: AppBar(
             title: const Text("Noted"),
             centerTitle: true,
             elevation: 0,
             backgroundColor: Colors.transparent,
             actions: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+              IconButton(onPressed: () {
+                // TODO: Search feature
+              }, icon: const Icon(Icons.search))
             ],
           ),
           body: BlocBuilder<FetchNotesCubit, FetchNotesState>(

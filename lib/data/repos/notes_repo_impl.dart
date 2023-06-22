@@ -27,15 +27,17 @@ class NotesRepository extends NotesRepoAbstract {
       // }
       List<NoteEntity> remoteNotes =
           await notesRemoteDatasource.fetchAllNotes();
-      bool isCacheOutDated = _isCacheStale(remoteNotes, localNotes);
+      // bool isCacheOutDated = _isCacheStale(remoteNotes, localNotes);
 
-      if (isCacheOutDated) {
-        notesLocalDataSource.box.clear();
-        notesLocalDataSource.box.addAll(remoteNotes);
+      // if (isCacheOutDated) {
+      //   notesLocalDataSource.box.clear();
+      //   print(notesLocalDataSource.box.values);
+      //   notesLocalDataSource.box.addAll(remoteNotes);
         return right(remoteNotes);
-      } else {
-        return right(localNotes);
-      }
+      // } 
+      // else {
+      //   return right(localNotes);
+      // }
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
@@ -77,12 +79,12 @@ class NotesRepository extends NotesRepoAbstract {
 
   @override
   Future<Either<Failure, NoteEntity>> updateNote(
-      Map<String, dynamic> noteMap) async {
+      NoteEntity note) async {
     try {
-      String noteId = noteMap["id"];
-      NoteEntity updatedNote = await notesRemoteDatasource.updateNote(noteMap);
-
-      notesLocalDataSource.updateNote(noteId, noteMap);
+      
+      NoteEntity updatedNote = await notesRemoteDatasource.updateNote(note);
+      
+      
       return right(updatedNote);
     } catch (e) {
       if (e is DioException) {

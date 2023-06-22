@@ -6,13 +6,13 @@ import 'package:noted/domain/use_cases/use_case.dart';
 
 import '../entities/note_entity.dart';
 
-class UpdateNoteUsecase extends UseCase<NoteEntity,  Map<String,dynamic>?> {
+class UpdateNoteUsecase extends UseCase<NoteEntity,  NoteEntity> {
   final NotesRepository _notesRepository;
 
   UpdateNoteUsecase(this._notesRepository);
 
   @override
-  Future<Either<Failure, NoteEntity>> execute([Map<String,dynamic>? parameter]) async {
+  Future<Either<Failure, NoteEntity>> execute([NoteEntity? parameter]) async {
   return await _notesRepository.updateNote(parameter!);
   }
  

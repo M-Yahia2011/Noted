@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class Failure {
   final String message;
@@ -44,5 +45,9 @@ class ServerFailure extends Failure {
     // default:
     // return ServerFailure("Unknow Error");
     // }
+  }
+  factory ServerFailure.fromFirebaseException(
+      FirebaseAuthException firebaseException) {
+    return ServerFailure(firebaseException.code);
   }
 }

@@ -9,14 +9,14 @@ import '../../../../../domain/entities/note_entity.dart';
 part 'fetch_notes_state.dart';
 
 class FetchNotesCubit extends Cubit<FetchNotesState> {
-  FetchNotesCubit({required this.fetchNotesUsecase})
+  FetchNotesCubit(this._fetchNotesUsecase)
       : super(FetchNotesInitial());
 
-  final FetchNotesUsecase fetchNotesUsecase;
+  final FetchNotesUsecase _fetchNotesUsecase;
 
   Future<void> fetchAllNotes() async {
     emit(NotesLoading());
-    var result = await fetchNotesUsecase.execute();
+    var result = await _fetchNotesUsecase.execute();
     result.fold((failure) {
       emit(NotesFailure(failure.message));
     }, (fetchedNotes) {

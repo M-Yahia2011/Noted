@@ -29,15 +29,15 @@ class AuthTextField extends StatelessWidget {
         hintStyle: TextStyle(color: Colors.grey[500]),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(32),
+          borderRadius: BorderRadius.circular(8),
         ),
         border: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(32),
+          borderRadius: BorderRadius.circular(8),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.grey.shade400),
-          borderRadius: BorderRadius.circular(32),
+          borderRadius: BorderRadius.circular(8),
         ),
         fillColor: Colors.grey.shade200,
         filled: true,

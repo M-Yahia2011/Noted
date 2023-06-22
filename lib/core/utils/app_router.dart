@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:noted/presentation/screens/auth_screen.dart';
+import 'package:noted/data/data_sources/firebase_auth.dart';
+import 'package:noted/presentation/screens/register_screen.dart';
+import '/presentation/screens/sign_in_screen.dart';
 import '../../presentation/screens/add_note_screen.dart';
 import '../../presentation/screens/all_notes_screen.dart';
 
@@ -13,10 +15,18 @@ class AppRouter {
             return const AllNotesScreen();
           case AddNoteScreen.routeName:
             return const AddNoteScreen();
-          case AuthScreen.routeName:
-            return const AuthScreen();
+          case SignInScreen.routeName:
+            return const SignInScreen();
+          case RegisterScreen.routeName:
+            return const RegisterScreen();
+
           default:
-            return const AuthScreen();
+            print(AuthService.authInstance.currentUser);
+            if (AuthService.authInstance.currentUser != null) {
+              return const AllNotesScreen();
+            } else {
+              return const RegisterScreen();
+            }
         }
       },
     );

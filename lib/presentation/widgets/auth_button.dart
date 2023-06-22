@@ -14,12 +14,15 @@ class AuthButton extends StatelessWidget {
         width: double.infinity,
         height: 56,
         child: ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8))),
             onPressed: function,
             child: Text(
               buttonText,
               style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
             )));

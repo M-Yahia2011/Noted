@@ -27,7 +27,7 @@ class _NoteDetailsScreen extends State<NoteDetailsScreen> {
   final bodyTextController = TextEditingController();
   late FocusNode titleFocusNode;
   late FocusNode bodyFocusNode;
-  Color? selectedColor = Colors.blue.shade100;
+  Color? selectedColor;
   GlobalKey formKey = GlobalKey<FormState>();
 
   @override
@@ -37,6 +37,7 @@ class _NoteDetailsScreen extends State<NoteDetailsScreen> {
     bodyTextController.text = widget.note.body;
     titleFocusNode = FocusNode();
     bodyFocusNode = FocusNode();
+    selectedColor = Color(widget.note.color!);
   }
 
   @override
@@ -58,7 +59,7 @@ class _NoteDetailsScreen extends State<NoteDetailsScreen> {
       child: BlocBuilder<UpdateNoteCubit, UpdateNoteState>(
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: Color(widget.note.color!),
+            backgroundColor: selectedColor,
             appBar: AppBar(
                 title: Text(
                   titleTextController.text,
@@ -71,18 +72,13 @@ class _NoteDetailsScreen extends State<NoteDetailsScreen> {
                   IconButton(
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
-                        // NoteEntity updatedNote = widget.note;
-                        // updatedNote.
 
-                        Map<String, dynamic> noteMap = {
-                          "id": widget.note.id,
-                          "title": titleTextController.text,
-                          "body": bodyTextController.text,
-                          "createdAt": widget.note.createdAt.toIso8601String(),
-                          "color": selectedColor!.value
-                        };
+                        widget.note.title = titleTextController.text;
+                        widget.note.body = bodyTextController.text;
+                        widget.note.color = selectedColor!.value;
+
                         await BlocProvider.of<UpdateNoteCubit>(context)
-                            .updateNote(noteMap)
+                            .updateNote(widget.note)
                             .then((_) async {
                           await BlocProvider.of<FetchNotesCubit>(context)
                               .fetchAllNotes();
@@ -172,6 +168,13 @@ class _NoteDetailsScreen extends State<NoteDetailsScreen> {
               ),
             ),
             actions: <Widget>[
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cancle'),
+              ),
               ElevatedButton(
                 child: const Text('DONE'),
                 onPressed: () {

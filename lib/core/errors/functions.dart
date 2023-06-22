@@ -8,7 +8,7 @@ class HelperFunctions {
     List<NoteModel> notes = [];
     jsonData.forEach((key, value) {
       value["id"] = key;
-    notes.add(NoteModel.fromJson(value));
+    notes.add(NoteModel.fromJson(Map<String,dynamic>.from(value) as dynamic));
     });
 
     return notes;
