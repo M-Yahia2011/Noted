@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'app.dart';
 import 'core/utils/firebase_api_service.dart';
-import 'data/data_sources/firebase_auth.dart';
 import 'data/data_sources/notes_local_data_source.dart';
 import 'data/data_sources/notes_remote_data_source.dart';
 import 'data/repos/notes_repo_impl.dart';

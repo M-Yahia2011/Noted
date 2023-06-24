@@ -48,6 +48,7 @@ class _SignInScreenState extends State<SignInScreen> {
         if (state is LoginLoading) {
           isLoading = true;
         } else if (state is LoginSuccess) {
+          isLoading = false;
           Navigator.of(context).pushNamed(AllNotesScreen.routeName);
         } else if (state is LoginFailure) {
           isLoading = false;

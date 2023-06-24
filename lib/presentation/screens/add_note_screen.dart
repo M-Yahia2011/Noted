@@ -2,17 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get_it/get_it.dart';
-import '../../core/utils/firebase_api_service.dart';
-import '../../data/data_sources/notes_local_data_source.dart';
-import '../../data/data_sources/notes_remote_data_source.dart';
 import '../manager/cubits/note_cubits/add_note_cubit/add_note_cubit.dart';
 import '../manager/cubits/note_cubits/fetch_notes_cubit/fetch_notes_cubit.dart';
 import '/core/utils/app_theme.dart';
-import '/main.dart';
-
 import '/data/repos/notes_repo_impl.dart';
 import '/domain/use_cases/add_note_use_case.dart';
-
 import '../widgets/body_text_field.dart';
 import '../widgets/title_text_field.dart';
 
