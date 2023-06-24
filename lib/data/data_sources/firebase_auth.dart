@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_it/get_it.dart';
+import 'package:noted/data/repos/notes_repo_impl.dart';
 
 class AuthService {
   static FirebaseAuth authInstance = FirebaseAuth.instance;
@@ -19,7 +21,7 @@ class AuthService {
   }
 
   Future<void> signOut(String email, String password) async {
+    await GetIt.instance.unregister<NotesRepository>();
     await authInstance.signOut();
-    
   }
 }

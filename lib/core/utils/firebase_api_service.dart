@@ -4,11 +4,14 @@ import 'package:noted/data/data_sources/firebase_auth.dart';
 class FirebaseApiService {
   String? userId;
   DatabaseReference? databaseRef;
+
   FirebaseApiService(String? uid) {
     userId = uid;
-    // AuthServ/
+    FirebaseDatabase.instance.setPersistenceEnabled(false); // disable offline persistence
+    FirebaseDatabase.instance.goOffline(); // close the existing connection
+    FirebaseDatabase.instance.goOnline(); // reopen the connection
+    databaseRef = FirebaseDatabase.instance.ref("users/$userId");
   }
-
   Future<Map<String, dynamic>> readNotes() async {
     final DataSnapshot dataSnapshot = await databaseRef!.child('notes').get();
     if (dataSnapshot.exists) {
