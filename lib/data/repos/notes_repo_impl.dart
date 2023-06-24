@@ -13,31 +13,15 @@ class NotesRepository extends NotesRepoAbstract {
       {required this.notesRemoteDatasource,
       required this.notesLocalDataSource});
 
-  // bool _isCacheStale(List<NoteEntity> remoteData, List<NoteEntity> localData) {
-  //   return localData.length != remoteData.length ||
-  //       !listEquals(localData, remoteData);
-  // }
-
   @override
   Future<Either<Failure, List<NoteEntity>>> getAllNotes() async {
     try {
-      // List<NoteEntity> localNotes = notesLocalDataSource.fetchAllNotes();
-      // if (localNotes.isNotEmpty) {
-      //   return right(localNotes);
-      // }
       List<NoteEntity> remoteNotes =
           await notesRemoteDatasource.fetchAllNotes();
-      // bool isCacheOutDated = _isCacheStale(remoteNotes, localNotes);
 
-      // if (isCacheOutDated) {
-      //   notesLocalDataSource.box.clear();
-      //   print(notesLocalDataSource.box.values);
-      //   notesLocalDataSource.box.addAll(remoteNotes);
-        return right(remoteNotes);
-      // } 
-      // else {
-      //   return right(localNotes);
-      // }
+      //TODO: handle local source
+
+      return right(remoteNotes);
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
@@ -78,13 +62,10 @@ class NotesRepository extends NotesRepoAbstract {
   }
 
   @override
-  Future<Either<Failure, NoteEntity>> updateNote(
-      NoteEntity note) async {
+  Future<Either<Failure, NoteEntity>> updateNote(NoteEntity note) async {
     try {
-      
       NoteEntity updatedNote = await notesRemoteDatasource.updateNote(note);
-      
-      
+
       return right(updatedNote);
     } catch (e) {
       if (e is DioException) {

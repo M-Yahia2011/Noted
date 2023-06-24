@@ -15,14 +15,10 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-
   GetIt.instance.registerSingleton<NotesRepository>(
     NotesRepository(
       notesRemoteDatasource: NotesRemoteDatasource(
-        FirebaseApiService(
-          
-          AuthService.authInstance.currentUser?.uid,
-        ),
+        FirebaseApiService(),
       ),
       notesLocalDataSource: NotesLocalDataSource(),
     ),
@@ -30,5 +26,3 @@ void main() async {
 
   runApp(const MyApp());
 }
-
-
