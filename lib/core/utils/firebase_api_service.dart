@@ -2,7 +2,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:noted/data/data_sources/firebase_auth.dart';
 
 class FirebaseApiService {
-  
   DatabaseReference getDatabaseRef() {
     return FirebaseDatabase.instance
         .ref("users/${AuthService.authInstance.currentUser!.uid}");
