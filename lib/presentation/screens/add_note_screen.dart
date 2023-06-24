@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:get_it/get_it.dart';
+import '../../core/utils/firebase_api_service.dart';
+import '../../data/data_sources/notes_local_data_source.dart';
+import '../../data/data_sources/notes_remote_data_source.dart';
 import '../manager/cubits/note_cubits/add_note_cubit/add_note_cubit.dart';
 import '../manager/cubits/note_cubits/fetch_notes_cubit/fetch_notes_cubit.dart';
 import '/core/utils/app_theme.dart';
@@ -52,8 +56,8 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddNoteCubit(
-        AddNoteUsecase(getIt.get<NotesRepository>()),
-      ),
+        AddNoteUsecase(GetIt.instance.get<NotesRepository>(),
+      ),),
       child: BlocBuilder<AddNoteCubit, AddNoteState>(
         builder: (context, state) {
           return Scaffold(

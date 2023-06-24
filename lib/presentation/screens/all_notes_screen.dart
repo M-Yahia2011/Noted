@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:noted/core/utils/firebase_api_service.dart';
+import 'package:noted/data/data_sources/notes_local_data_source.dart';
+import 'package:noted/data/data_sources/notes_remote_data_source.dart';
+import 'package:noted/presentation/screens/sign_in_screen.dart';
 import '/data/data_sources/firebase_auth.dart';
 import '/data/repos/notes_repo_impl.dart';
 import '/domain/use_cases/delete_note_use_case.dart';
-import '/main.dart';
 import '/presentation/screens/add_note_screen.dart';
-import '/presentation/screens/sign_in_screen.dart';
 import '../../core/utils/app_theme.dart';
 import '../manager/cubits/note_cubits/delete_note_cubit/delete_note_cubit.dart';
 import '../manager/cubits/note_cubits/fetch_notes_cubit/fetch_notes_cubit.dart';
@@ -34,8 +37,8 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          DeleteNoteCubit(DeleteNoteUsecase(getIt.get<NotesRepository>())),
+      create: (context) => DeleteNoteCubit(
+          DeleteNoteUsecase(GetIt.instance.get<NotesRepository>())),
       child: SafeArea(
         child: Scaffold(
           drawer: Drawer(
@@ -55,6 +58,12 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
                         color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
+                ),
+              ),
+              SizedBox(
+                height: 80,
+                child: Center(
+                  child: Text(AuthService.authInstance.currentUser!.email!),
                 ),
               ),
               const Spacer(),
@@ -78,10 +87,11 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
             backgroundColor: Colors.transparent,
             actions: [
               IconButton(
-                  onPressed: () {
-                    // TODO: Search feature
-                  },
-                  icon: const Icon(Icons.search))
+                onPressed: () {
+                  // TODO: Search feature
+                },
+                icon: const Icon(Icons.search),
+              ),
             ],
           ),
           body: BlocBuilder<FetchNotesCubit, FetchNotesState>(

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import '/core/utils/firebase_api_service.dart';
-import '/domain/entities/note_entity.dart';
 import 'app.dart';
+import 'core/utils/firebase_api_service.dart';
+import 'data/data_sources/firebase_auth.dart';
 import 'data/data_sources/notes_local_data_source.dart';
 import 'data/data_sources/notes_remote_data_source.dart';
 import 'data/repos/notes_repo_impl.dart';
@@ -15,13 +14,16 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await Hive.initFlutter();
-  Hive.registerAdapter(NoteEntityAdapter());
-  await Hive.openBox<NoteEntity>("notes_box");
 
-  getIt.registerSingleton<NotesRepository>(
+
+  GetIt.instance.registerSingleton<NotesRepository>(
     NotesRepository(
-      notesRemoteDatasource: NotesRemoteDatasource(FirebaseApiService()),
+      notesRemoteDatasource: NotesRemoteDatasource(
+        FirebaseApiService(
+          
+          AuthService.authInstance.currentUser?.uid,
+        ),
+      ),
       notesLocalDataSource: NotesLocalDataSource(),
     ),
   );
@@ -29,5 +31,4 @@ void main() async {
   runApp(const MyApp());
 }
 
-final getIt = GetIt.instance;
-// Fp8cUkwWqetCXFu4
+

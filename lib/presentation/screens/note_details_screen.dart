@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:get_it/get_it.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import '../../core/utils/firebase_api_service.dart';
+import '../../data/data_sources/notes_local_data_source.dart';
+import '../../data/data_sources/notes_remote_data_source.dart';
 import '/domain/entities/note_entity.dart';
-
 import '../../domain/use_cases/update_note_use_case.dart';
 import '../manager/cubits/note_cubits/fetch_notes_cubit/fetch_notes_cubit.dart';
 import '../manager/cubits/note_cubits/update_note_cubit/update_note_cubit.dart';
@@ -29,7 +33,7 @@ class _NoteDetailsScreen extends State<NoteDetailsScreen> {
   late FocusNode bodyFocusNode;
   Color? selectedColor;
   GlobalKey formKey = GlobalKey<FormState>();
-
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -54,92 +58,91 @@ class _NoteDetailsScreen extends State<NoteDetailsScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => UpdateNoteCubit(
-        UpdateNoteUsecase(getIt.get<NotesRepository>()),
+        UpdateNoteUsecase(GetIt.instance.get<NotesRepository>()),
       ),
-      child: BlocBuilder<UpdateNoteCubit, UpdateNoteState>(
+      child: BlocConsumer<UpdateNoteCubit, UpdateNoteState>(
+        listener: (context, state) async {
+          
+          if (state is UpdateNoteLoading) {
+            isLoading = true;
+          } else if (state is UpdateNoteFailure) {
+            isLoading = false;
+            await showDialog(
+                context: context,
+                builder: ((context) {
+                  return AlertDialog(
+                    content: Text(state.errorMessage),
+                  );
+                }));
+          } else if (state is UpdateNoteDone) {
+            isLoading = false;
+            Navigator.of(context).pop();
+          }
+        },
         builder: (context, state) {
-          return Scaffold(
-            backgroundColor: selectedColor,
-            appBar: AppBar(
-                title: Text(
-                  titleTextController.text,
-                  style: const TextStyle(overflow: TextOverflow.ellipsis),
-                ),
-                centerTitle: true,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                actions: [
-                  IconButton(
-                      onPressed: () async {
-                        FocusScope.of(context).unfocus();
+          return ModalProgressHUD(
+            inAsyncCall: isLoading,
+            child: Scaffold(
+              backgroundColor: selectedColor,
+              appBar: AppBar(
+                  title: Text(
+                    titleTextController.text,
+                    style: const TextStyle(overflow: TextOverflow.ellipsis),
+                  ),
+                  centerTitle: true,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  actions: [
+                    IconButton(
+                        onPressed: () async {
+                          FocusScope.of(context).unfocus();
+                          widget.note.title = titleTextController.text;
+                          widget.note.body = bodyTextController.text;
+                          widget.note.color = selectedColor!.value;
 
-                        widget.note.title = titleTextController.text;
-                        widget.note.body = bodyTextController.text;
-                        widget.note.color = selectedColor!.value;
-
-                        await BlocProvider.of<UpdateNoteCubit>(context)
-                            .updateNote(widget.note)
-                            .then((_) async {
-                          await BlocProvider.of<FetchNotesCubit>(context)
-                              .fetchAllNotes();
-                          if (state is UpdateNoteDone) {
-                            if (context.mounted) Navigator.of(context).pop();
+                          if (context.mounted) {
+                            await BlocProvider.of<UpdateNoteCubit>(context)
+                                .updateNote(widget.note);
                           }
-                          if (state is UpdateNoteFailure) {
-                            if (context.mounted) {
-                              await showDialog(
-                                  context: context,
-                                  builder: ((context) {
-                                    return AlertDialog(
-                                      content: Text(state.errorMessage),
-                                    );
-                                  }));
-                            }
+                          if (context.mounted) {
+                            await BlocProvider.of<FetchNotesCubit>(context)
+                                .fetchAllNotes();
                           }
-                        });
-                      },
-                      icon: const Icon(Icons.done)),
-                  IconButton(
-                      onPressed: () {
-                        showColorPickerDialog(context);
-                      },
-                      icon: const Icon(
-                        Icons.palette_outlined,
-                      ))
-                ]),
-            body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Stack(
-                  children: [
-                    Form(
-                      key: formKey,
-                      autovalidateMode: AutovalidateMode.always,
-                      child: Column(
-                        children: [
-                          TitleTextField(
-                              titleTextController: titleTextController,
-                              titleFocusNode: titleFocusNode,
+                        },
+                        icon: const Icon(Icons.done)),
+                    IconButton(
+                        onPressed: () {
+                          showColorPickerDialog(context);
+                        },
+                        icon: const Icon(
+                          Icons.palette_outlined,
+                        ))
+                  ]),
+              body: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Form(
+                    key: formKey,
+                    autovalidateMode: AutovalidateMode.always,
+                    child: Column(
+                      children: [
+                        TitleTextField(
+                            titleTextController: titleTextController,
+                            titleFocusNode: titleFocusNode,
+                            bodyFocusNode: bodyFocusNode),
+                        const Divider(
+                          color: Colors.grey,
+                          height: 0,
+                          thickness: 0,
+                        ),
+                        Expanded(
+                          child: BodyTextField(
+                              bodyTextController: bodyTextController,
                               bodyFocusNode: bodyFocusNode),
-                          const Divider(
-                            color: Colors.grey,
-                            height: 0,
-                            thickness: 0,
-                          ),
-                          Expanded(
-                            child: BodyTextField(
-                                bodyTextController: bodyTextController,
-                                bodyFocusNode: bodyFocusNode),
-                          )
-                        ],
-                      ),
+                        )
+                      ],
                     ),
-                    if (state is UpdateNoteLoading)
-                      Center(
-                          child: CircularProgressIndicator(
-                        color: AppTheme.bgColor,
-                      )),
-                  ],
+                  ),
                 ),
               ),
             ),

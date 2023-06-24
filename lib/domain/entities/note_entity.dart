@@ -1,17 +1,9 @@
-import 'package:hive/hive.dart';
-part 'note_entity.g.dart';
+class NoteEntity {
 
-@HiveType(typeId: 0)
-class NoteEntity extends HiveObject {
-  @HiveField(0)
   String id;
-  @HiveField(1)
   String title;
-  @HiveField(2)
   String body;
-  @HiveField(3)
   final DateTime createdAt;
-  @HiveField(4)
   int? color;
 
   NoteEntity(

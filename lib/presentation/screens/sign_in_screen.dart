@@ -50,6 +50,7 @@ class _SignInScreenState extends State<SignInScreen> {
         } else if (state is LoginSuccess) {
           Navigator.of(context).pushNamed(AllNotesScreen.routeName);
         } else if (state is LoginFailure) {
+          isLoading = false;
           if (context.mounted) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.message)));

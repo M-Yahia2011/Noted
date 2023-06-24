@@ -17,7 +17,9 @@ class NoteCard extends StatelessWidget {
       children: [
         Card(
           color: Color(note.color!),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          elevation: 3,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           child: InkWell(
             onTap: () {
               Navigator.push(
@@ -71,14 +73,20 @@ class NoteCard extends StatelessWidget {
         Positioned(
           top: 5,
           right: 5,
-          child: IconButton(
-            onPressed: () async {
-              await BlocProvider.of<DeleteNoteCubit>(context).deleteNote(note);
-              if (context.mounted) {
-                await BlocProvider.of<FetchNotesCubit>(context).fetchAllNotes();
-              }
-            },
-            icon: const Icon(Icons.delete),
+          child: Material(
+            color: Colors.transparent,
+            child: IconButton(
+              splashRadius: 25,
+              onPressed: () async {
+                await BlocProvider.of<DeleteNoteCubit>(context)
+                    .deleteNote(note);
+                if (context.mounted) {
+                  await BlocProvider.of<FetchNotesCubit>(context)
+                      .fetchAllNotes();
+                }
+              },
+              icon: const Icon(Icons.delete),
+            ),
           ),
         ),
       ],

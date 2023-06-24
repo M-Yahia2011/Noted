@@ -35,12 +35,5 @@ class NoteModel extends NoteEntity {
         noteCreatedAt: DateTime.parse(json["createdAt"]),
       );
 
-  @override
-  Map<String, dynamic> toJson() => {
-        "id": noteId,
-        "title": noteTitle,
-        "body": noteBody,
-        "color": noteColor,
-        "createdAt": noteCreatedAt.toIso8601String(),
-      };
+
 }

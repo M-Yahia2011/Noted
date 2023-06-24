@@ -1,24 +1,24 @@
-import 'package:hive/hive.dart';
-import '/core/utils/constants.dart';
 import '../../domain/entities/note_entity.dart';
 
 class NotesLocalDataSource {
-  var box = Hive.box<NoteEntity>(Constants.kHiveNotesBox);
+  // var box = Hive.box<NoteEntity>(Constants.kHiveNotesBox);
 
   List<NoteEntity> fetchAllNotes() {
-    return box.values.toList();
+    return [];
+
+    //  box.values.toList();
   }
 
   void addNote(NoteEntity note) async {
-    await box.add(note);
+    // await box.add(note);
   }
 
   void deleteNote(NoteEntity note) {
-    note.delete();
+    // note.delete();
   }
 
   void clearNotes() {
-    box.clear();
+    // box.clear();
   }
   // TODO: use firebase offline solution instead of hive
 }

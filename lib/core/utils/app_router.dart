@@ -4,7 +4,6 @@ import '/presentation/screens/register_screen.dart';
 import '/presentation/screens/sign_in_screen.dart';
 import '../../presentation/screens/add_note_screen.dart';
 import '../../presentation/screens/all_notes_screen.dart';
-
 class AppRouter {
   static Route<dynamic> route(RouteSettings routeSettings) {
     return MaterialPageRoute<void>(

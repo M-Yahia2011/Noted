@@ -9,8 +9,8 @@ import '../../../../../domain/entities/note_entity.dart';
 part 'fetch_notes_state.dart';
 
 class FetchNotesCubit extends Cubit<FetchNotesState> {
-  FetchNotesCubit(this._fetchNotesUsecase)
-      : super(FetchNotesInitial());
+  FetchNotesCubit(this._fetchNotesUsecase) : super(FetchNotesInitial());
+  List<NoteEntity> notes = [];
 
   final FetchNotesUsecase _fetchNotesUsecase;
 
@@ -20,6 +20,7 @@ class FetchNotesCubit extends Cubit<FetchNotesState> {
     result.fold((failure) {
       emit(NotesFailure(failure.message));
     }, (fetchedNotes) {
+      notes = fetchedNotes;
       emit(NotesLoaded(fetchedNotes));
     });
   }

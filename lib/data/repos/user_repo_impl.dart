@@ -51,6 +51,7 @@ class UserRepoImpl extends UserRepoAbstract {
   Future<Either<Failure, void>> singOut(Map<String, dynamic> userMap) async {
     try {
       await _authService.signOut(userMap["email"], userMap["password"]);
+      
       return right(null);
     } catch (e) {
       if (e is DioException) {

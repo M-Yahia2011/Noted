@@ -1,5 +1,4 @@
 import '/core/utils/firebase_api_service.dart';
-import '/data/data_sources/firebase_auth.dart';
 import '/data/models/note_model.dart';
 import '/domain/entities/note_entity.dart';
 import 'data_source_abstract.dart';
@@ -8,7 +7,6 @@ import '../../core/errors/functions.dart';
 class NotesRemoteDatasource extends DatasourceAbstract {
   NotesRemoteDatasource(this.apiService);
   final FirebaseApiService apiService;
-  final String userId = AuthService.authInstance.currentUser!.uid;
   @override
   Future<List<NoteEntity>> fetchAllNotes() async {
     var result = await apiService.readNotes();
