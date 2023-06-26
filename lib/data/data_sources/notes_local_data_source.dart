@@ -1,3 +1,5 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../domain/entities/note_entity.dart';
 
 class NotesLocalDataSource {
@@ -18,6 +20,7 @@ class NotesLocalDataSource {
   }
 
   void clearNotes() {
+    
     // box.clear();
   }
   // TODO: use firebase offline solution instead of hive

@@ -10,7 +10,7 @@ environment:
     sdk: ">=2.19.3 <3.0.0"
 
 dependencies:
-    connectivity_plus: ^4.0.1
+   
     dartz: ^0.10.1
     dio: ^5.1.1
     fast_color_picker: ^0.1.1
@@ -21,14 +21,12 @@ dependencies:
         sdk: flutter
     flutter_bloc: ^8.1.2
     flutter_colorpicker: ^1.0.3
+    flutter_launcher_icons: ^0.13.1
     flutter_localizations:
         sdk: flutter
     flutter_material_color_picker: ^1.2.0
     get_it: ^7.6.0
     google_fonts: ^4.0.3
-
-    hive: ^2.2.3
-    hive_flutter: ^1.1.0
     intl: ^0.18.0
     modal_progress_hud_nsn: ^0.4.0
 
@@ -38,8 +36,14 @@ dev_dependencies:
 
     flutter_lints: ^2.0.0
     build_runner: ^2.4.4
-    hive_generator: ^2.0.0
+    flutter_launcher_icons: "^0.13.1"
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/note.png"
+  min_sdk_android: 21
+  adaptive_icon_foreground:
 flutter:
     uses-material-design: true
 

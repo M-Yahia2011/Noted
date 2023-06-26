@@ -3,6 +3,7 @@ import 'package:noted/data/data_sources/firebase_auth.dart';
 
 class FirebaseApiService {
   DatabaseReference getDatabaseRef() {
+    FirebaseDatabase.instance.setPersistenceEnabled(true);
     return FirebaseDatabase.instance
         .ref("users/${AuthService.authInstance.currentUser!.uid}");
   }
